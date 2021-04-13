@@ -8,10 +8,10 @@
 
 import React from 'react';
 import type {Node} from 'react';
-import Login from './src/screens/Login';
+import Routes from './src/screens';
 
 const App: () => Node = () => {
-  return <Login />;
+  return <Routes />;
 };
 
 export default App;
