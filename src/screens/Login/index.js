@@ -55,7 +55,7 @@ const Login = ({navigation}) => {
           text="Cadastre-se"
           onPress={() => navigation.navigate('SignUp')}
         />
-        <StyledText>{error}</StyledText>
+        <StyledText color="red">{error}</StyledText>
       </Form>
     </StyledView>
   );

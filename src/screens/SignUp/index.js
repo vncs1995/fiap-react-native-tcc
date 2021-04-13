@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import {
@@ -10,13 +10,27 @@ import auth from '@react-native-firebase/auth';
 import {Form} from '@unform/mobile';
 import firestore from '@react-native-firebase/firestore';
 
-const SignUp = ({navigation}) => {
+const SignUp = ({navigation, route}) => {
   const formRef = useRef(null);
+  const updateUserData = route?.params?.changeData;
   const [error, setError] = useState();
+  const [currentUser, setCurrentUser] = useState();
 
-  async function handleSubmit(data, {reset}) {
-    console.log(data);
+  const fetchUserToUpdate = useCallback(async () => {
+    const _currentUser = await firestore()
+      .collection('users')
+      .where('email', '==', auth().currentUser.email)
+      .get();
+    setCurrentUser(_currentUser);
+  }, []);
 
+  useEffect(() => {
+    if (updateUserData) {
+      fetchUserToUpdate();
+    }
+  }, [fetchUserToUpdate, updateUserData]);
+
+  const newUser = async data => {
     try {
       const userLogged = await auth().createUserWithEmailAndPassword(
         data.email,
@@ -38,9 +52,30 @@ const SignUp = ({navigation}) => {
         setError('That email address is invalid!');
       }
     }
+  };
+
+  const updateUser = async data => {
+    try {
+      await firestore()
+        .collection('users')
+        .doc(currentUser.docs[0])
+        .update(data);
+    } catch (err) {
+      console.log('update err: ', err);
+    }
+  };
+
+  async function handleSubmit(data, {reset}) {
+    if (updateUserData) {
+      await updateUser(data);
+    } else {
+      await newUser(data);
+    }
 
     // reset();
   }
+
+  const getInitialData = () => {};
 
   return (
     <StyledScrollView
@@ -49,7 +84,10 @@ const SignUp = ({navigation}) => {
         alignItems: 'center',
       }}>
       <StyledView>
-        <Form ref={formRef} onSubmit={handleSubmit}>
+        <Form
+          ref={formRef}
+          onSubmit={handleSubmit}
+          initialData={getInitialData()}>
           <Input label="Nome" name="name" />
           <Input
             label="E-mail"
@@ -70,7 +108,7 @@ const SignUp = ({navigation}) => {
             text="Registrar"
             onPress={() => formRef.current.submitForm()}
           />
-          <StyledText>{error}</StyledText>
+          <StyledText color="red">{error}</StyledText>
         </Form>
       </StyledView>
     </StyledScrollView>

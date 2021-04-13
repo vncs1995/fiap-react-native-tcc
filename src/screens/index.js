@@ -5,6 +5,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
+import About from './About';
+import AddNewGame from './AddNewGame';
+import GameDetails from './GameDetails';
 
 const Stack = createStackNavigator();
 
@@ -38,6 +41,9 @@ function Routes() {
         <Stack.Screen name="Home" component={Home} initialParams={{user}} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="About" component={About} />
+        <Stack.Screen name="AddNewGame" component={AddNewGame} />
+        <Stack.Screen name="GameDetails" component={GameDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );

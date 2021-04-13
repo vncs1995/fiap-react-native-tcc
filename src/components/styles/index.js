@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import {Platform} from 'react-native';
 
-export const StyledView = styled.View`
+export const StyledView = styled.SafeAreaView`
   flex: 1;
   background-color: white;
   justify-content: center;
@@ -16,5 +16,6 @@ export const StyledScrollView = styled.ScrollView`
 `;
 
 export const StyledText = styled.Text`
-  color: palevioletred;
+  font-weight: bold;
+  color: ${props => props.color || 'black'};
 `;
