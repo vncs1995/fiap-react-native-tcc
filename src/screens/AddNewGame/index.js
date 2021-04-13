@@ -60,6 +60,18 @@ const AddNewGame = ({navigation}) => {
           <RNPickerSelect
             placeholder="Condição do jogo"
             onValueChange={value => setGameCondition(value)}
+            style={{
+              viewContainer: {
+                borderStyle: 'solid',
+                borderWidth: 1,
+                borderRadius: 5,
+                paddingLeft: 5,
+                minWidth: '50%',
+                maxWidth: '100%',
+                height: 35,
+                marginBottom: 15,
+              },
+            }}
             items={[
               {label: 'Novo', value: 'New'},
               {label: 'Usado', value: 'Used'},
